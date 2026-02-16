@@ -1,14 +1,24 @@
+// Core imports
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const app = express();
+// Routes imports
+const apiRoutes = require("./routes"); // index.js automatically
+const authMiddleware = require("./middleware/authMiddleware");
 
+const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+// app.use(cors());
+app.use(express.json());
+app.use("/api/v1", apiRoutes);
+app.get("/", authMiddleware, (req, res) => {
+  res.json({
+    message: "You accessed a protected route!",
+    userId: req.userId,
+  });
 });
 
 mongoose
