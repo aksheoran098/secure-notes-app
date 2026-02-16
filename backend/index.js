@@ -6,7 +6,6 @@ require("dotenv").config();
 
 // Routes imports
 const apiRoutes = require("./routes"); // index.js automatically
-const authMiddleware = require("./middleware/authMiddleware");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -14,12 +13,6 @@ const PORT = process.env.PORT || 4000;
 // app.use(cors());
 app.use(express.json());
 app.use("/api/v1", apiRoutes);
-app.get("/", authMiddleware, (req, res) => {
-  res.json({
-    message: "You accessed a protected route!",
-    userId: req.userId,
-  });
-});
 
 mongoose
   .connect(process.env.MONGODB_URI)
